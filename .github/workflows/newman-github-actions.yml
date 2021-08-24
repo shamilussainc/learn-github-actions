@@ -23,6 +23,10 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@master
       
+    # Upgrage npm version
+    - name: Upgrage npm
+      run: npm install -g npm
+      
     # Install Node.js environment
     - name: set up node
       uses: actions/setup-node@v1
