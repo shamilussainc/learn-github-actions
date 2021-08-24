@@ -26,8 +26,8 @@ jobs:
     # Install Node.js environment
     - name: set up node
       uses: actions/setup-node@v1
-      with:
-          node-version: '14.x'
+#       with:
+#           node-version: '14.x'
           
     # Install newman
     - name: Install newman
