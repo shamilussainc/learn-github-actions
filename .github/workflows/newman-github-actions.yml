@@ -25,7 +25,7 @@ jobs:
       
     # Upgrage npm version
     - name: Upgrage npm
-      run: sudo npm install -g npm
+      run: npm i npm-upgrade
       
     # Install Node.js environment
     - name: set up node
