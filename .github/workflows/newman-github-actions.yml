@@ -15,22 +15,40 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  newman:
-    # The type of runner that the job will run on
+  test-api:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    
     steps:
-       - name: Checkout
-         uses: actions/checkout@v1
-         
-       - name: Run API Tests
-         id: run-newman
-         uses: anthonyvscode/newman-action@v1
-         with:
-            collection: https://www.getpostman.com/collections/89833c3c989188dd42ab
-            reporters: cli
+    #Checkout the repository
+    - name: Checkout Repository
+      uses: actions/checkout@master
+      
+    # Install Node.js environment
+    - name: set up node
+      uses: actions/setup-node@v1
+      with:
+          node-version: '12.x'
+          
+    # Install newman
+    - name: Install newman
+      run: | 
+       npm install -g newman
+       npm install -g newman-reporter-htmlextra
 
-       - name: Output summary to console
-         run: echo ${{ steps.run-newman.outputs.summary }}
+    - name: Make Directory for results
+      run: mkdir -p testResults
+    
+    # Run POSTMAN collection and output the file as html
+    - name: Run POSTMAN collection
+      run: |
+       newman run ./tests/simple\ book\ api.postman_collection.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html --reporter-htmlextra-darkTheme  > testResults/runreport1.html   
+
+    # Upload test results
+    - name: Output the run Details
+      uses: actions/upload-artifact@v2
+      with: 
+       name: RunReports
+       path: testResults
+
+
+
